@@ -95,11 +95,8 @@ export default function PersonalInformation() {
                 <Link href="/" asChild>
                   <Button title="Back" />
                 </Link>
-                <Link href="/onboarding/step3-webview" asChild onPress={handleNext}>
+                <Link href={'/onboarding/step3' as any} asChild onPress={handleNext}>
                   <Button title="Continue" />
-                </Link>
-                <Link href="/onboarding/step3-webbrowser" asChild onPress={handleNext}>
-                  <Button title="Continue Browser" />
                 </Link>
               </XStack>
             </Form>

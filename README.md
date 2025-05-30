@@ -14,7 +14,19 @@ This is a React Native Expo application using Tamagui UI components to create a 
 To run this application locally:
 
 1. Clone the repository
-2. Install dependencies
+2. Copy the environment file and add your Flexpa publishable key
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env` and add your Flexpa publishable key:
+
+```
+EXPO_PUBLIC_FLEXPA_PUBLISHABLE_KEY=pk_test_your_key_here
+```
+
+3. Install dependencies
 
 ```bash
 npm install
@@ -22,7 +34,7 @@ npm install
 yarn install
 ```
 
-3. Start the development server
+4. Start the development server
 
 ```bash
 npm start
@@ -30,13 +42,9 @@ npm start
 yarn start
 ```
 
-4. Run on iOS or Android
+5. Run on iOS or Android
 
-```bash
-npm run ios
-# or
-npm run android
-```
+Select `i` once the Expo Go server is running to open an iOS simulator, select `a` once the Expo Go server is running to open an Android simulator.
 
 ## Tech Stack
 

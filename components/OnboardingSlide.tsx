@@ -38,9 +38,9 @@ export const OnboardingSlide = ({
 }: OnboardingSlideProps) => {
   return (
     <ScrollView f={1} contentContainerStyle={{ flexGrow: 1 }} bg="$white">
-      <YStack f={1} jc="center" ai="center" p="$4" gap="$4" bg="$white">
+      <YStack f={1} jc="center" ai="center" p="$3" gap="$2" bg="$white">
         {showLogo && (
-          <XStack mt="$6" mb="$2">
+          <XStack mt="$10" mb="$2">
             <FlexpaHealthLogo />
           </XStack>
         )}
@@ -48,20 +48,20 @@ export const OnboardingSlide = ({
         {imageSource ? (
           <Image
             source={{ uri: imageSource }}
-            width={240}
-            height={180}
+            width={220}
+            height={160}
             alt="Onboarding image"
             resizeMode="contain"
-            mt="$6"
+            mt="$4"
           />
         ) : null}
 
-        <YStack ai="center" w="100%" maxWidth={500} px="$2" gap="$2">
+        <YStack ai="center" w="100%" maxWidth={500} px="$2" gap="$1" mt={imageSource ? '$2' : '$6'}>
           <Title ta="center">{title}</Title>
           {subtitle && <Subtitle ta="center">{subtitle}</Subtitle>}
         </YStack>
 
-        <YStack w="100%" maxWidth={500} mt="$4">
+        <YStack w="100%" maxWidth={500} mt="$2">
           {children}
         </YStack>
       </YStack>
