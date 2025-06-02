@@ -10,6 +10,7 @@ import { OnboardingSlide } from '~/components/OnboardingSlide';
 export default function OnboardingChoice() {
   const [openLink, setOpenLink] = useState(false);
   const [publicToken, setPublicToken] = useState<any>(null);
+  const [error, setError] = useState<any>(null);
   const [webViewSource, setWebViewSource] = useState<{ html: string } | null>(null);
   const [webViewKey, setWebViewKey] = useState(0);
 
@@ -35,15 +36,13 @@ export default function OnboardingChoice() {
                 },
                 onSuccess: (publicToken) => {
                     window.ReactNativeWebView.postMessage(JSON.stringify({
-                      action: 'navigate',
-                      route: '/onboarding/step2',
+                      action: 'continue',
                       data: { publicToken }
                     }));
                 },
                 onExit: (error) => {
                     window.ReactNativeWebView.postMessage(JSON.stringify({
-                      action: 'navigate', 
-                      route: '/onboarding/step2',
+                      action: 'continue', 
                       data: { error }
                     }));
                 },
@@ -65,9 +64,12 @@ export default function OnboardingChoice() {
       const data = JSON.parse(event.nativeEvent.data);
 
       // Check if this is a navigation message from FlexpaLink callbacks
-      if (data.action === 'navigate') {
+      if (data.action === 'continue') {
         if (data.data.publicToken) {
           setPublicToken(data.data.publicToken);
+        }
+        if (data.data.error) {
+          setError(data.data.error);
         }
 
         setOpenLink(false);
@@ -89,6 +91,63 @@ export default function OnboardingChoice() {
       setWebViewSource({ html: initialHtml });
     }
   }, [openLink]);
+
+  if (error) {
+    // Format error for display
+    const displayError =
+      typeof error === 'string'
+        ? error
+        : typeof error === 'object'
+          ? JSON.stringify(error)
+          : 'Connection failed';
+
+    return (
+      <>
+        <Stack.Screen options={{ headerShown: false }} />
+        <OnboardingSlide
+          showLogo
+          title="Connection Failed"
+          subtitle="Unable to connect to your health insurance provider">
+          <YStack gap="$4" w="100%" ai="center" mt="$2">
+            <Card p="$4" borderRadius="$4" bg="$red1">
+              <YStack gap="$2">
+                <Text textAlign="center" color="$red11" fontSize="$4" fontWeight="bold">
+                  ❌ Connection Failed
+                </Text>
+                <Text textAlign="center" color="$red11" fontSize="$3">
+                  We were unable to connect to your health insurance provider. Please try again.
+                </Text>
+              </YStack>
+            </Card>
+
+            <Card p="$3" borderRadius="$4" bg="$white" borderWidth={1} borderColor="$red6">
+              <YStack gap="$2">
+                <Text color="$flexpaGray" fontSize="$2">
+                  Error Details:
+                </Text>
+                <Text color="$red11" fontSize="$2" fontWeight="500">
+                  {displayError}
+                </Text>
+              </YStack>
+            </Card>
+
+            <XStack gap="$4" jc="center" mt="$4">
+              <Button
+                title="Try Again"
+                onPress={() => {
+                  setError(null);
+                  setOpenLink(true);
+                }}
+              />
+              <Link href="/" asChild>
+                <Button title="Skip for now" />
+              </Link>
+            </XStack>
+          </YStack>
+        </OnboardingSlide>
+      </>
+    );
+  }
 
   if (publicToken) {
     // Format token for display
